@@ -1,7 +1,11 @@
 {
   "name": "sergionogueira/api-payload-factory",
+  "require": {
+    "php": ">=7.0.0",
+    "fzaninotto/faker" : "1.6.*"
+  },
   "autoload": {
-    "psr-0" : {
+    "psr-4" : {
       "SergioNogueira\\ApiPayloadFactory" : "src"
     }
   }
