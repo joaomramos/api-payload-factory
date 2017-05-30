@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/joaomramos/api-payload-factory.svg?style=flat-square)](https://travis-ci.org/joaomramos/api-payload-factory.svg)
+[![Build Status](https://img.shields.io/travis/joaomramos/api-payload-factory.svg?style=flat-square)](https://travis-ci.org/joaomramos/api-payload-factory)
 
 Inspired by [FactoryMuffin](https://github.com/thephpleague/factory-muffin), the focus of this lightweight version is to define and generate payloads for API endpoints by version. 
 
