@@ -1,6 +1,21 @@
 {
   "name": "sergionogueira/api-payload-factory",
-  "description" : "REST API payload factory",
+  "type": "library",
+  "description": "REST API payload factory. Allows to define and generate fake payloads for API testing.",
+  "keywords": ["payload", "API", "testing", "factory"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sérgio Nogueira",
+      "email": "sergio.nogueira@jumia.com",
+      "homepage": "https://github.com/sergionogueira"
+    },
+    {
+      "name": "João Ramos",
+      "email": "joao.ramos@jumia.com",
+      "homepage": "https://github.com/joaomramos"
+    }
+  ],
   "require": {
     "php": ">=5.6",
     "fzaninotto/faker" : "1.6.*"
