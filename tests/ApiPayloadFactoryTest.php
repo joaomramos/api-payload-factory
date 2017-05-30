@@ -50,4 +50,15 @@ class ApiPayloadFactoryTest extends AbstractTestCase
         $this->assertInstanceOf(Definition::class, $postUpdateDefinition);
         $this->assertNotEquals($postCreateDefinition, $postUpdateDefinition);
     }
+
+    /** @test */
+    public function it_should_define_same_endpoint_with_two_different_versions()
+    {
+        $postCreateDefinition1 = ApiPayloadFactory::define('post/create', 1.4);
+        $postCreateDefinition2 = ApiPayloadFactory::define('post/update', 1.5);
+
+        $this->assertInstanceOf(Definition::class, $postCreateDefinition1);
+        $this->assertInstanceOf(Definition::class, $postCreateDefinition2);
+        $this->assertNotEquals($postCreateDefinition1, $postCreateDefinition2);
+    }
 }
