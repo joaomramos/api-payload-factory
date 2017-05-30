@@ -2,6 +2,8 @@
 
 namespace JumiaMarket\ApiPayloadFactory;
 
+use StdClass;
+
 /**
  * Factory definition class
  *
@@ -18,13 +20,13 @@ class Definition
     protected $version;
 
     /** @var array */
-    protected $definitions = [];
+    protected $definition = [];
 
     /**
      * Definition constructor.
      *
      * @param string $endpoint
-     * @param bool   $version
+     * @param float  $version
      */
     public function __construct($endpoint, $version)
     {
@@ -33,16 +35,46 @@ class Definition
     }
 
     /**
+     * Get end point
+     *
+     * @return string
+     */
+    public function getEndPoint()
+    {
+        return $this->endPoint;
+    }
+
+    /**
+     * Get version
+     *
+     * @return float
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
      * Set the attribute definitions.
      *
-     * @param array $definitions The attribute definitions.
+     * @param array $definition
      *
-     * @return \JumiaMarket\ApiPayloadFactory\Definition
+     * @return $this
      */
-    public function setDefinitions(array $definitions = [])
+    public function setDefinition(array $definition = [])
     {
-        $this->definitions = array_merge($this->definitions, $definitions);
+        $this->definition = $definition;
 
         return $this;
+    }
+
+    /**
+     * Get payload
+     *
+     * @return StdClass
+     */
+    public function getPayload()
+    {
+        return json_decode(json_encode($this->definition));
     }
 }
