@@ -5,8 +5,9 @@ namespace JumiaMarket\ApiPayloadFactory;
 /**
  * Factory definition class
  *
+ * @author João Ramos <joao.ramos@jumia.com>
+ * @author Sérgio Nogueira <sergio.nogueira@jumia.com>
  * @package JumiaMarket\ApiPayloadFactory
- * @author  Sérgio Nogueira <sergio.nogueira@jumia.com>
  */
 class Definition
 {
