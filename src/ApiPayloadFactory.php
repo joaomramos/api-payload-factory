@@ -20,7 +20,7 @@ class ApiPayloadFactory
     protected static $definitions = [];
 
     /**
-     * @param sring          $endpoint
+     * @param string         $endpoint
      * @param string|integer $version
      *
      * @return Definition
@@ -28,12 +28,15 @@ class ApiPayloadFactory
      */
     public static function define($endpoint, $version = null)
     {
+        $version = (string) $version;
+
         if (! is_string($endpoint)) {
             throw new InvalidArgumentException('Endpoint must be a string.');
         }
 
-        if (isset(static::$definitions[$endpoint][$version])) {
-            throw new DefinitionDuplicatedException($endpoint);
+        if (($version && isset(static::$definitions[$endpoint][$version])
+            || (! $version && isset(static::$definitions[$endpoint])))) {
+                throw new DefinitionDuplicatedException($endpoint);
         }
 
         return static::$definitions[$endpoint][$version] = new Definition($endpoint, $version);

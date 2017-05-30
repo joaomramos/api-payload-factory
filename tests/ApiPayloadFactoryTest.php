@@ -3,6 +3,9 @@
 use JumiaMarket\ApiPayloadFactory\ApiPayloadFactory;
 use JumiaMarket\ApiPayloadFactory\Definition;
 
+/**
+ * @backupStaticAttributes disabled
+ */
 class ApiPayloadFactoryTest extends AbstractTestCase
 {
     /** @test */
@@ -33,7 +36,18 @@ class ApiPayloadFactoryTest extends AbstractTestCase
      */
     public function it_should_not_be_possible_to_define_a_definition_twice()
     {
-        $definition = ApiPayloadFactory::define('post/create', 1.1);
-        $definition = ApiPayloadFactory::define('post/create', 1.1);
+        $definition = ApiPayloadFactory::define('post/create', 1.2);
+        $definition = ApiPayloadFactory::define('post/create', 1.2);
+    }
+
+    /** @test */
+    public function it_should_define_two_definitions()
+    {
+        $postCreateDefinition = ApiPayloadFactory::define('post/create', 1.3);
+        $postUpdateDefinition = ApiPayloadFactory::define('post/update', 1.3);
+
+        $this->assertInstanceOf(Definition::class, $postCreateDefinition);
+        $this->assertInstanceOf(Definition::class, $postUpdateDefinition);
+        $this->assertNotEquals($postCreateDefinition, $postUpdateDefinition);
     }
 }

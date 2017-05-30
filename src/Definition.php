@@ -28,9 +28,6 @@ class Definition
      */
     public function __construct($endpoint, $version)
     {
-        assert(is_string($endpoint));
-        assert(is_float($version));
-
         $this->endPoint = $endpoint;
         $this->version = $version;
     }
