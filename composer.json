@@ -1,0 +1,8 @@
+{
+  "name": "sergionogueira/api-payload-factory",
+  "autoload": {
+    "psr-0" : {
+      "SergioNogueira\\ApiPayloadFactory" : "src"
+    }
+  }
+}
