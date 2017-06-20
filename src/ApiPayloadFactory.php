@@ -32,9 +32,8 @@ class ApiPayloadFactory
         $this->checkEndpoint($endpoint)
              ->handleVersion($version);
 
-        if (($version && isset($this->definitions[$endpoint][$version])
-            || (! $version && isset($this->definitions[$endpoint])))) {
-                throw new DefinitionDuplicatedException($endpoint);
+        if ($this->isEndpointDefined($endpoint, $version)) {
+            throw new DefinitionDuplicatedException($endpoint);
         }
 
         return $this->definitions[$endpoint][$version] = new Definition($endpoint, $version);
@@ -54,8 +53,7 @@ class ApiPayloadFactory
         $this->checkEndpoint($endpoint)
              ->handleVersion($version);
 
-        if (! isset($this->definitions[$endpoint])
-            || ($version && ! isset($this->definitions[$endpoint][$version]))) {
+        if (! $this->isEndpointDefined($endpoint, $version)) {
             throw new DefinitionNotFoundException($endpoint);
         }
 
@@ -87,5 +85,16 @@ class ApiPayloadFactory
             throw new InvalidArgumentException('Endpoint must be a string.');
         }
         return $this;
+    }
+
+    /**
+     * @param string $endpoint
+     * @param mixed  $version
+     * @return bool
+     */
+    protected function isEndpointDefined($endpoint, $version = null)
+    {
+        return $version && isset($this->definitions[$endpoint][$version])
+            || (! $version && isset($this->definitions[$endpoint]));
     }
 }
