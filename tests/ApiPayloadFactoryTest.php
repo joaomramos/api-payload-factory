@@ -17,7 +17,7 @@ class ApiPayloadFactoryTest extends AbstractTestCase
     /** @test */
     public function it_should_create_a_definition()
     {
-        $definition = ApiPayloadFactory::define('post/create', 1.1);
+        $definition = $this->getApiPayloadFactory()->define('post/create', 1.1);
         $this->assertInstanceOf(Definition::class, $definition);
     }
 
@@ -27,7 +27,7 @@ class ApiPayloadFactoryTest extends AbstractTestCase
      */
     public function it_should_not_be_possible_to_define_a_definition_with_a_non_valid_enpoint_format()
     {
-        $definition = ApiPayloadFactory::define(false, 1.1);
+        $this->getApiPayloadFactory()->define(false, 1.1);
     }
 
     /**
@@ -36,15 +36,17 @@ class ApiPayloadFactoryTest extends AbstractTestCase
      */
     public function it_should_not_be_possible_to_define_a_definition_twice()
     {
-        $definition = ApiPayloadFactory::define('post/create', 1.2);
-        $definition = ApiPayloadFactory::define('post/create', 1.2);
+        $factory = $this->getApiPayloadFactory();
+        $factory->define('post/create', 1.2);
+        $factory->define('post/create', 1.2);
     }
 
     /** @test */
     public function it_should_define_two_definitions()
     {
-        $postCreateDefinition = ApiPayloadFactory::define('post/create', 1.3);
-        $postUpdateDefinition = ApiPayloadFactory::define('post/update', 1.3);
+        $factory = $this->getApiPayloadFactory();
+        $postCreateDefinition = $factory->define('post/create', 1.3);
+        $postUpdateDefinition = $factory->define('post/update', 1.3);
 
         $this->assertInstanceOf(Definition::class, $postCreateDefinition);
         $this->assertInstanceOf(Definition::class, $postUpdateDefinition);
@@ -54,11 +56,49 @@ class ApiPayloadFactoryTest extends AbstractTestCase
     /** @test */
     public function it_should_define_same_endpoint_with_two_different_versions()
     {
-        $postCreateDefinition1 = ApiPayloadFactory::define('post/create', 1.4);
-        $postCreateDefinition2 = ApiPayloadFactory::define('post/update', 1.5);
+        $factory = $this->getApiPayloadFactory();
+        $postCreateDefinition1 = $factory->define('post/create', 1.4);
+        $postCreateDefinition2 = $factory->define('post/update', 1.5);
 
         $this->assertInstanceOf(Definition::class, $postCreateDefinition1);
         $this->assertInstanceOf(Definition::class, $postCreateDefinition2);
         $this->assertNotEquals($postCreateDefinition1, $postCreateDefinition2);
+    }
+
+    /** @test */
+    public function it_should_create_a_new_payload()
+    {
+        $version = 1.1;
+        $factory = $this->getApiPayloadFactory();
+        $factory->define('post/create', $version);
+        $payload = $factory->create('post/create', $version);
+
+        $this->assertInstanceOf(Definition::class, $payload);
+        $this->assertEquals($version, $payload->getVersion());
+    }
+
+    /**
+     * @test
+     * @expectedException \JumiaMarket\ApiPayloadFactory\Exception\DefinitionNotFoundException
+     */
+    public function it_should_not_be_possible_to_create_a_payload_not_defined()
+    {
+        $this->getApiPayloadFactory()->create('post/create');
+    }
+
+    /**
+     * @test
+     * @expectedException \JumiaMarket\ApiPayloadFactory\Exception\DefinitionNotFoundException
+     */
+    public function it_should_not_be_possible_to_create_a_payload_for_a_version_not_defined()
+    {
+        $factory = $this->getApiPayloadFactory();
+        $factory->define('post/create', 1.1);
+        $factory->create('post/create', 1.2);
+    }
+
+    protected function getApiPayloadFactory()
+    {
+        return new ApiPayloadFactory();
     }
 }
