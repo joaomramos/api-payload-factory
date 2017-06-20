@@ -1,5 +1,5 @@
 {
-    "name": "sergionogueira/api-payload-factory",
+    "name": "joaomramos/api-payload-factory",
     "type": "library",
     "description": "REST API payload factory. Allows to define and generate fake payloads for API testing.",
     "keywords": ["payload", "API", "testing", "factory"],
