@@ -77,4 +77,76 @@ class Definition
     {
         return json_decode(json_encode($this->definition));
     }
+
+    /**
+     * __call magic method to handle "set" or "get"
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, array $arguments)
+    {
+        $operation = strtolower(substr($name, 0, 3));
+        $property = $this->convertFromCamelCase(substr($name, 3));
+
+        switch ($operation) {
+            case 'set':
+                $result = $this->setDefinitionValue($property, current($arguments));
+                break;
+            case 'get':
+                $result = $this->getDefinitionValue($property);
+                break;
+            default:
+                $result = null;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Convert from camel case
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function convertFromCamelCase($value)
+    {
+        return strtolower(
+            preg_replace(
+                ["/([A-Z]+)/", "/_([A-Z]+)([A-Z][a-z])/"],
+                ["_$1", "_$1_$2"],
+                lcfirst($value)
+            )
+        );
+    }
+
+    /**
+     * Set definition value
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    protected function setDefinitionValue($key, $value)
+    {
+        $this->definition[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get definition value
+     *
+     * @param string $key
+     *
+     * @return mixed|null
+     */
+    protected function getDefinitionValue($key)
+    {
+        return isset($this->definition[$key]) ? $this->definition[$key] : null;
+    }
 }
