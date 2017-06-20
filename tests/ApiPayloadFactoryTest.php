@@ -3,9 +3,6 @@
 use JumiaMarket\ApiPayloadFactory\ApiPayloadFactory;
 use JumiaMarket\ApiPayloadFactory\Definition;
 
-/**
- * @backupStaticAttributes disabled
- */
 class ApiPayloadFactoryTest extends AbstractTestCase
 {
     /** @test */
@@ -17,8 +14,12 @@ class ApiPayloadFactoryTest extends AbstractTestCase
     /** @test */
     public function it_should_create_a_definition()
     {
-        $definition = $this->getApiPayloadFactory()->define('post/create', 1.1);
+        $factory = $this->getApiPayloadFactory();
+        $definition = $factory->define('post/create', 1.1);
+        $definitionWithoutVersion = $factory->define('post/update');
+
         $this->assertInstanceOf(Definition::class, $definition);
+        $this->assertInstanceOf(Definition::class, $definitionWithoutVersion);
     }
 
     /**
@@ -71,10 +72,13 @@ class ApiPayloadFactoryTest extends AbstractTestCase
         $version = 1.1;
         $factory = $this->getApiPayloadFactory();
         $factory->define('post/create', $version);
+        $factory->define('post/update');
         $payload = $factory->create('post/create', $version);
+        $payloadWithNoVersion = $factory->create('post/update');
 
         $this->assertInstanceOf(Definition::class, $payload);
         $this->assertEquals($version, $payload->getVersion());
+        $this->assertInstanceOf(Definition::class, $payloadWithNoVersion);
     }
 
     /**
