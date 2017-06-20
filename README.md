@@ -1,4 +1,5 @@
 [![Build Status](https://img.shields.io/travis/joaomramos/api-payload-factory.svg?style=flat-square)](https://travis-ci.org/joaomramos/api-payload-factory)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/joaomramos/api-payload-factory.svg?style=flat-square)](https://scrutinizer-ci.com/g/joaomramos/api-payload-factory/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/joaomramos/api-payload-factory.svg?style=flat-square)](https://scrutinizer-ci.com/g/joaomramos/api-payload-factory)
 
 
