@@ -47,4 +47,14 @@ class DefinitionTest extends AbstractTestCase
         $this->assertEquals($createdBy, $payload->created_by);
         $this->assertEquals((object) $extraInfo, (object) $payload->extra_info);
     }
+
+    /** @test */
+    public function it_should_be_possible_to_set_and_get_single_definition_values()
+    {
+        $definition = new Definition('/INVOICE_ACCRUAL/COMMISSION_FEES', '1.0');
+        $definition->setType('INVOICE_ACCRUAL')->setSellerId(123);
+
+        $this->assertEquals('INVOICE_ACCRUAL', $definition->getType());
+        $this->assertEquals(123, $definition->getSellerId());
+    }
 }
