@@ -16,7 +16,6 @@ class DefinitionDuplicatedException extends Exception
     /**
      * @param string $endpoint
      * @param string $message
-     * @return void
      */
     public function __construct($endpoint, $message = null)
     {
