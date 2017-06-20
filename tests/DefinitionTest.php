@@ -7,8 +7,8 @@ class DefinitionTest extends AbstractTestCase
     /** @test */
     public function it_should_return_api_endpoint_and_api_version()
     {
-        $endPoint = '/INVOICE_ACCRUAL/COMMISSION_FEES';
-        $version = '1.0';
+        $endPoint = 'post/create';
+        $version = 1.0;
 
         $definition = new Definition($endPoint, $version);
 
@@ -19,42 +19,37 @@ class DefinitionTest extends AbstractTestCase
     /** @test */
     public function it_should_match_definition_with_payload()
     {
-        $type = 'INVOICE_ACCRUAL';
-        $code = 'COMMISSION_FEES';
-        $sellerId = '123';
-        $createdBy = 'statemachine';
-        $extraInfo = [
-            'order_number' => 123
-        ];
+        $field1 = 'Field 1';
+        $field2 = 'Field 2';
+        $field3 = ['field31', 'field32'];
 
-        $definition = new Definition('/INVOICE_ACCRUAL/COMMISSION_FEES', '1.0');
+        $definition = new Definition('post/create', 1.0);
         $definition->setDefinition(
             [
-                'type' => $type,
-                'code' => $code,
-                'seller_id' => $sellerId,
-                'created_by' => $createdBy,
-                'extra_info' => $extraInfo
+                'field1' => $field1,
+                'field2' => $field2,
+                'field3' => $field3,
             ]
         );
 
         $payload = $definition->getPayload();
 
         $this->assertInstanceOf('StdClass', $payload);
-        $this->assertEquals($type, $payload->type);
-        $this->assertEquals($code, $payload->code);
-        $this->assertEquals($sellerId, $payload->seller_id);
-        $this->assertEquals($createdBy, $payload->created_by);
-        $this->assertEquals((object) $extraInfo, (object) $payload->extra_info);
+        $this->assertEquals($field1, $payload->field1);
+        $this->assertEquals($field2, $payload->field2);
+        $this->assertEquals((object) $field3, (object) $payload->field3);
     }
 
     /** @test */
     public function it_should_be_possible_to_set_and_get_single_definition_values()
     {
-        $definition = new Definition('/INVOICE_ACCRUAL/COMMISSION_FEES', '1.0');
-        $definition->setType('INVOICE_ACCRUAL')->setSellerId(123);
+        $field1 = 'Field 1';
+        $field2 = 123;
 
-        $this->assertEquals('INVOICE_ACCRUAL', $definition->getType());
-        $this->assertEquals(123, $definition->getSellerId());
+        $definition = new Definition('post/create', 1.0);
+        $definition->setField1($field1)->setField2($field2);
+
+        $this->assertEquals($field1, $definition->getField1());
+        $this->assertEquals($field2, $definition->getField2());
     }
 }
