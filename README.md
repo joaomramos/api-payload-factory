@@ -8,7 +8,8 @@ Inspired by [FactoryMuffin](https://github.com/thephpleague/factory-muffin), the
 
 **Create definitions**
 ```php
-ApiPayloadFactory::define('post/create', '1.1')
+$factory = new ApiPayloadFactory();
+$factory->define('post/create', '1.1')
     ->setDefinitions([
         'title' => 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
         'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue ipsum non nisl dignissim tempus. Donec vitae dolor purus. Ut magna lorem, finibus id lacus id, feugiat placerat nisi. Maecenas rutrum quis felis imperdiet fermentum.',
@@ -19,7 +20,8 @@ ApiPayloadFactory::define('post/create', '1.1')
 **Generate Payload**
 
 ```php
-$postCreatePayload = ApiPayloadFactory::create('post/create', '1.1');
+$factory = new ApiPayloadFactory();
+$postCreatePayload = $factory->create('post/create', '1.1')->getPayload();
 
 $postCreatePayload->title;
 $postCreatePayload->text;
