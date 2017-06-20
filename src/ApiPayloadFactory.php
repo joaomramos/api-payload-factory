@@ -41,7 +41,14 @@ class ApiPayloadFactory implements Countable
             throw new DefinitionDuplicatedException($endpoint);
         }
 
-        return $this->definitions[$endpoint][$version] = new Definition($endpoint, $version);
+        $definition = new Definition($endpoint, $version);
+        if ($version) {
+            $this->definitions[$endpoint][$version] = $definition;
+        } else {
+            $this->definitions[$endpoint] = $definition;
+        }
+
+        return $definition;
     }
 
     /**
