@@ -2,9 +2,14 @@
 
 namespace JumiaMarket\ApiPayloadFactory;
 
+use Countable;
 use InvalidArgumentException;
 use JumiaMarket\ApiPayloadFactory\Exception\DefinitionDuplicatedException;
 use JumiaMarket\ApiPayloadFactory\Exception\DefinitionNotFoundException;
+use JumiaMarket\ApiPayloadFactory\Exception\DirectoryNotFoundException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RegexIterator;
 
 /**
  * API payload factory
@@ -13,7 +18,7 @@ use JumiaMarket\ApiPayloadFactory\Exception\DefinitionNotFoundException;
  * @author Sérgio Nogueira <sergio.nogueira@jumia.com>
  * @package JumiaMarket\ApiPayloadFactory
  */
-class ApiPayloadFactory
+class ApiPayloadFactory implements Countable
 {
     /**
      * @var \JumiaMarket\ApiPayloadFactory\Definition[]
@@ -61,6 +66,34 @@ class ApiPayloadFactory
     }
 
     /**
+     * Loads factories from a directory
+     *
+     * @param string $path
+     *
+     * @return $this
+     *
+     * @throws DirectoryNotFoundException
+     */
+    public function loadFactories($path)
+    {
+        $real = realpath($path);
+        if (! $real || ! is_dir($real)) {
+            throw new DirectoryNotFoundException($path);
+        }
+        $this->loadDirectory($real);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->definitions);
+    }
+
+    /**
      * Not possible to have floating points as array keys.
      * Solution, cast to string.
      *
@@ -96,5 +129,24 @@ class ApiPayloadFactory
     {
         return $version && isset($this->definitions[$endpoint][$version])
             || (! $version && isset($this->definitions[$endpoint]));
+    }
+
+    /**
+     * Load all the directory files.
+     * $apiPF is going to have instance available.
+     *
+     * @param string $path
+     *
+     * @return void
+     */
+    protected function loadDirectory($path)
+    {
+        $directory = new RecursiveDirectoryIterator($path);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = new RegexIterator($iterator, '/^[^\.](?:(?!\/\.).)+?\.php$/i');
+        $apiPF = $this;
+        foreach ($files as $file) {
+            require $file->getPathName();
+        }
     }
 }

@@ -97,6 +97,23 @@ class ApiPayloadFactoryTest extends AbstractTestCase
         $factory->create('post/create', 1.2);
     }
 
+    /** @test */
+    public function it_should_load_factories_from_a_path()
+    {
+        $factory = $this->getApiPayloadFactory();
+        $factory->loadFactories(__DIR__ . '/factories');
+        $this->assertSame(1, $factory->count());
+    }
+
+    /**
+     * @test
+     * @expectedException \JumiaMarket\ApiPayloadFactory\Exception\DirectoryNotFoundException
+     */
+    public function it_should_not_be_possible_to_load_factories_if_path_is_not_valid()
+    {
+        $this->getApiPayloadFactory()->loadFactories('/invalid_factories_path');
+    }
+
     protected function getApiPayloadFactory()
     {
         return new ApiPayloadFactory();
